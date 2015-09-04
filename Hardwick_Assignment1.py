@@ -51,6 +51,18 @@ class BinaryNode(object):
             self.search(self.right, value)
         return None
 
+    def cull(self, value):
+        if self.left is not None:
+            if self.left.key == value:
+                self.left = None
+            else:
+                self.left.cull(value)
+        if self.right is not None:
+            if self.right.key == value:
+                self.right = None
+            else:
+                self.right.cull(value)
+
 
 class BinaryTree(object):
 
@@ -59,13 +71,39 @@ class BinaryTree(object):
 
     def add(self, value, parentValue):
         if self.root is None and parentValue is None:
-            self.root = BinaryNode(value, parentValue)
+            self.root = BinaryNode(value, None)
         else:
-            if self.root.search(value) is not None:
-                
+            solution = self.root.search(value)
+            if solution is not None:
+                if solution.left is None:
+                    solution.left = BinaryNode(value, solution.left)
+                elif solution.right is None:
+                    solution.right = BinaryNode(value, solution.right)
+                else:
+                    print "Parent has two children, node not added."
+            else:
+                print "Parent not found."
 
+    def delete(self, value):
+        if self.root is None:
+            print "Binary Tree is empty, cannot delete further."
 
+        solution = self.root.search(value)
+        if solution is None:
+            print "Node not found."
+        elif (solution.left is not None) or (solution.right is not None):
+            print "Node not deleted, has children."
+        else:
+            self.root.cull(value)
 
+    def print_tree(self):
+        self.print_root(self.root)
 
-
-
+    def print_root(self, node):
+        if (node.left is None) and (node.right is None):
+            print node.key
+        elif (node.left is not None) and (node.right is not None):
+            self.print_root(node.left)
+            self.print_root(node.right)
+        elif node.left is not None:
+            self.print_root(node.left)
