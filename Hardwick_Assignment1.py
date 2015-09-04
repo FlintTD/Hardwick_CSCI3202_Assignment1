@@ -2,7 +2,7 @@ import Queue
 
 
 class Queue(object):
-    def add(self, data):
+    def add(self, data):                    # simple overlay function that prevents non-integer storage
         if data.type() is int:
             self.put(data)
             print "Integer stored!"
@@ -35,11 +35,13 @@ class Stack(object):
 
 
 class BinaryNode(object):
+    key = None
+    left = None
+    right = None
+    parent = None
 
-    def __init__(self, key, parent):
-        self.key = key
-        self.left = None
-        self.right = None
+    def __init__(self, value, parent):
+        self.key = value
         self.parent = parent
 
     def search(self, value):                # self-searching nodes are convenient; search invoked via the tree
@@ -65,9 +67,7 @@ class BinaryNode(object):
 
 
 class BinaryTree(object):                   # tree starts empty, root node added "manually" post-instancing
-
-    def __init__(self):
-        self.root = None
+    root = None
 
     def add(self, value, parentValue):
         if self.root is None and parentValue is None:
@@ -109,3 +109,45 @@ class BinaryTree(object):                   # tree starts empty, root node added
             self.print_root(node.right)
         elif node.left is not None:
             self.print_root(node.left)
+
+
+class Graph(object):
+    graph = {}
+    verts = 0
+
+    def add_vertex(self, value):
+        if self.graph.keys().count(value) == 0:
+            self.graph[value] = []
+        else:
+            print "Vertex already exists."
+
+    def add_edge(self, value1, value2):
+        if (value1 is not None) and (value2 is not None):
+            self.graph[value1] += [value2]
+            self.graph[value2] += [value1]
+        elif (value1 is None) or (value2 is None):
+            print "One or more vertices not found."
+        elif value1 == value2:
+            print "Nice try Loopy McLooperson."
+        else:
+            print "ERROR: Something enigmatic happened."
+
+    def find_vertex(self, value):
+        for x in self.graph.keys():
+            if x == value:
+                print self.graph[value]
+
+
+# tests exist below this line
+
+print "! ! Beginning Queue Tests ! !"       # Queue Tests
+
+
+print "! ! Beginning Stack Tests ! !"       # Stack Tests
+
+
+print "! ! Beginning Tree Tests  ! !"       # Tree Tests
+
+
+print "! ! Beginning Graph Tests ! !"       # Graph Tests
+
