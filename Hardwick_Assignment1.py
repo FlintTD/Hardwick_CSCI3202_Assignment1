@@ -42,7 +42,7 @@ class BinaryNode(object):
         self.right = None
         self.parent = parent
 
-    def search(self, value):
+    def search(self, value):                # self-searching nodes are convenient; search invoked via the tree
         if self.key == value:
             return self
         elif (self.key != value) and (self.left is not None):
@@ -51,7 +51,7 @@ class BinaryNode(object):
             self.search(self.right, value)
         return None
 
-    def cull(self, value):
+    def cull(self, value):                  # self-deleting nodes are also convenient; delete invoked via the tree
         if self.left is not None:
             if self.left.key == value:
                 self.left = None
@@ -64,7 +64,7 @@ class BinaryNode(object):
                 self.right.cull(value)
 
 
-class BinaryTree(object):
+class BinaryTree(object):                   # tree starts empty, root node added "manually" post-instancing
 
     def __init__(self):
         self.root = None
@@ -84,7 +84,7 @@ class BinaryTree(object):
             else:
                 print "Parent not found."
 
-    def delete(self, value):
+    def delete(self, value):                # invokes self-deleting process, after ensuring there is a node to delete
         if self.root is None:
             print "Binary Tree is empty, cannot delete further."
 
@@ -96,10 +96,12 @@ class BinaryTree(object):
         else:
             self.root.cull(value)
 
-    def print_tree(self):
+    def print_tree(self):                   # nominal print function that invokes helper via tree root node
+        if self.root is None:
+            print "Binary Tree is empty."
         self.print_root(self.root)
 
-    def print_root(self, node):
+    def print_root(self, node):             # helper print function that does all the work
         if (node.left is None) and (node.right is None):
             print node.key
         elif (node.left is not None) and (node.right is not None):
